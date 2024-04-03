@@ -1,0 +1,4 @@
+name: WardenAnticheat
+version: '${version}'
+main: dev.thebjoredcraft.wardenanticheat.WardenAntiCheat
+api-version: '1.20'
