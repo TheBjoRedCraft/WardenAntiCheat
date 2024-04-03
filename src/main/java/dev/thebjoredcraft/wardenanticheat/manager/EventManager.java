@@ -1,10 +1,14 @@
 package dev.thebjoredcraft.wardenanticheat.manager;
 
+import com.github.retrooper.packetevents.event.PacketHandler;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
+
 import dev.thebjoredcraft.wardenanticheat.anticheat.player.AntiCheatPlayer;
 import dev.thebjoredcraft.wardenanticheat.anticheat.player.AntiCheatPlayerData;
 import dev.thebjoredcraft.wardenanticheat.checks.FlightChecker;
 import dev.thebjoredcraft.wardenanticheat.checks.reach.ReachPvPChecker;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -32,7 +36,10 @@ public class EventManager implements Listener {
     public void onQuit(PlayerQuitEvent event){
         AntiCheatPlayer.remove(new AntiCheatPlayerData(event.getPlayer(), new ArrayList<>()));
     }
+    @PacketHandler
     public void onPacketReceive(PacketReceiveEvent event){
-        new FlightChecker(event);
+        if(WrapperPlayClientPlayerFlying.isFlying(event.getPacketType())){
+            new FlightChecker(event);
+        }
     }
 }

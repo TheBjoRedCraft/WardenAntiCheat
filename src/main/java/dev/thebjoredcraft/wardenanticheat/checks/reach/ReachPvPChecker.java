@@ -15,7 +15,7 @@ public class ReachPvPChecker {
             Location targetLocation = new Location(target.getWorld(), target.getX(), target.getY() + 1, target.getZ());
             double distance = playerLocation.distance(targetLocation);
 
-            if (distance > 3.42) {
+            if (distance > AntiCheat.maxReach) {
                 AntiCheat.flag(AntiCheatPlayer.getAntiCheatPlayer(player), FlagType.REACH);
 
                 event.setCancelled(true);

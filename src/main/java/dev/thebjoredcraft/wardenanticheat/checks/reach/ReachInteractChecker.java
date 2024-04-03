@@ -4,19 +4,17 @@ import dev.thebjoredcraft.wardenanticheat.anticheat.AntiCheat;
 import dev.thebjoredcraft.wardenanticheat.anticheat.flag.FlagType;
 import dev.thebjoredcraft.wardenanticheat.anticheat.player.AntiCheatPlayer;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class ReachInteractChecker {
-    public ReachInteractChecker(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player player && event.getEntity() instanceof Player target) {
-            Location playerLocation = new Location(player.getWorld(), player.getX(), player.getY() + 1, player.getZ());
-            Location targetLocation = new Location(target.getWorld(), target.getX(), target.getY() + 1, target.getZ());
-            double distance = playerLocation.distance(targetLocation);
+    public ReachInteractChecker(PlayerInteractEvent event) {
+        Location playerLocation = new Location(event.getPlayer().getWorld(), event.getPlayer().getX(), event.getPlayer().getY() + 1, event.getPlayer().getZ());
+        Location targetLocation = new Location(event.getInteractionPoint().getWorld(), event.getInteractionPoint().getX(), event.getInteractionPoint().getY() + 1, event.getInteractionPoint().getZ());
+        if(event.getInteractionPoint() != null) {
+            double distance = playerLocation.distance(event.getInteractionPoint());
 
-            if (distance > 3.42) {
-                AntiCheat.flag(AntiCheatPlayer.getAntiCheatPlayer(player), FlagType.REACH);
-
+            if (distance > AntiCheat.maxReach) {
+                AntiCheat.flag(AntiCheatPlayer.getAntiCheatPlayer(event.getPlayer()), FlagType.REACH);
                 event.setCancelled(true);
             }
         }

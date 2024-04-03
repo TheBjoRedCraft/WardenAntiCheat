@@ -13,5 +13,15 @@ public class FlightChecker {
             AntiCheat.flag(player, FlagType.FLY);
             event.setCancelled(true);
         }
+        if(!player.getBukkitPlayer().getAllowFlight()){
+            if(player.getBukkitPlayer().getFlySpeed() > AntiCheat.maxFlySpeed && !player.getBukkitPlayer().hasPermission("")){
+                AntiCheat.flag(player, FlagType.FLY);
+                event.setCancelled(true);
+            }
+        }else{
+            AntiCheat.flag(player, FlagType.FLY);
+            event.setCancelled(true);
+
+        }
     }
 }
